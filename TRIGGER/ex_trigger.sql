@@ -41,10 +41,10 @@ INSERT INTO Produto VALUES
 (5, 'Playstation3', '4002-8922 Bom dia e Cia', 3000.0)
 
 INSERT INTO estoque VALUES
-(1, 5, 10), --quantidade no estoque est· abaixo da minima
-(2, 10, 5), --quantidade no estoque est· acima
+(1, 5, 10), --quantidade no estoque est√° abaixo da minima
+(2, 10, 5), --quantidade no estoque est√° acima
 (3, 10, 10), --quantidade no estoque vai ficar abaixo na proxima venda
-(4, 0, 5) --n„o tem no estoque
+(4, 0, 5) --n√£o tem no estoque
 
 INSERT INTO estoque VALUES
 (5, 25, 10) --ta perfeito
@@ -67,26 +67,20 @@ BEGIN
 	SET @qtd = (SELECT Quantidade FROM inserted)
 	SET @estoque = (SELECT Qtd_Estoque FROM Estoque WHERE Codigo_Produto = @cod)
 	SET @estoqueMinimo = (SELECT Estoque_Minimo FROM Estoque WHERE Codigo_Produto = @cod)
-	
-
-	PRINT @nf
-	PRINT @cod
-	PRINT @qtd
-	PRINT @estoque
 
 	IF (@qtd < @estoque AND @qtd != 0)
 	BEGIN
 		PRINT 'Venda realizada com sucesso'
 		IF (@estoque < @estoqueMinimo)
 		BEGIN
-			RAISERROR('A quantidade em estoque do produto est· ABAIXO DO MINIMO!', 16, 1)
+			RAISERROR('A quantidade em estoque do produto est√° ABAIXO DO MINIMO!', 16, 1)
 		END
 		ELSE
 		BEGIN
 			SET @totalEstoque = @estoque - @qtd
 			IF(@totalEstoque < @estoqueMinimo)
 			BEGIN
-				RAISERROR('A quantidade em estoque ficar· ABAIXO DO MINIMO ao concluir a venda!', 16, 1)
+				RAISERROR('A quantidade em estoque ficar√° ABAIXO DO MINIMO ao concluir a venda!', 16, 1)
 			END
 			ELSE
 			BEGIN
@@ -97,7 +91,7 @@ BEGIN
 	ELSE
 	BEGIN
 		ROLLBACK TRANSACTION
-		RAISERROR('Venda n„o autorizada', 16, 1)
+		RAISERROR('Venda n√£o autorizada', 16, 1)
 	END
 END
 
@@ -107,7 +101,7 @@ DROP TRIGGER t_verificaEstoque
 INSERT INTO venda VALUES
 (111, 4, 0)
 
---Venda disponivel (e ficar· com estoque abaixo depois da compra)
+--Venda disponivel (e ficar√° com estoque abaixo depois da compra)
 INSERT INTO venda VALUES
 (222, 3, 5)
 
@@ -115,7 +109,7 @@ INSERT INTO venda VALUES
 INSERT INTO venda VALUES
 (333, 2, 6)
 
---Estoque j· est· abaixo do minimo
+--Estoque j√° est√° abaixo do minimo
 INSERT INTO venda VALUES
 (444, 1, 1) 
 
@@ -125,7 +119,7 @@ INSERT INTO venda VALUES
 
 
 --FUNCTION
-ALTER FUNCTION f_nf(@nota_fiscal INT)
+CREATE FUNCTION f_nf(@nota_fiscal INT)
 RETURNS @table TABLE(
 Nota_Fiscal			INT,
 Codigo_Produto		INT,
